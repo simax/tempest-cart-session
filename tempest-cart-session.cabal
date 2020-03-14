@@ -50,6 +50,7 @@ executable tempest-cart-session-exe
       , sqlite-simple
       , tempest-cart-session
   default-language: Haskell2010
+  extensions: OverloadedStrings
 
 test-suite tempest-cart-session-test
   type: exitcode-stdio-1.0
@@ -63,3 +64,4 @@ test-suite tempest-cart-session-test
       base >=4.7 && <5
     , tempest-cart-session
   default-language: Haskell2010
+
