@@ -44,63 +44,63 @@ data CartSession = CartSession
 
 instance Show CartSession where
    show cs = mconcat [ 
-                       nullableShow $ cartSessionId cs
+                       maybeShow $ cartSessionId cs
                      , "\n"
-                     , nullableShow $ uID cs
+                     , maybeShow $ uID cs
                      , "\n"
-                     , nullableShow $ customerid cs
+                     , maybeShow $ customerid cs
                      , "\n"
-                     , nullableShow $ orderdate cs
+                     , maybeShow $ orderdate cs
                      , "\n"
-                     , nullableShow $ deliveryMethod cs
+                     , maybeShow $ deliveryMethod cs
                      , "\n"
-                     , nullableShow $ totalTax cs
+                     , maybeShow $ totalTax cs
                      , "\n"
-                     , nullableShow $ totalDelivery cs
+                     , maybeShow $ totalDelivery cs
                      , "\n"
-                     , nullableShow $ totalSub cs
+                     , maybeShow $ totalSub cs
                      , "\n"
-                     , nullableShow $ totalFinal cs
+                     , maybeShow $ totalFinal cs
                      , "\n"
-                     , nullableShow $ countryCode cs
+                     , maybeShow $ countryCode cs
                      , "\n"
-                     , nullableShow $ currencyCode cs
+                     , maybeShow $ currencyCode cs
                      , "\n"
-                     , nullableShow $ orderNumber cs
+                     , maybeShow $ orderNumber cs
                      , "\n"
-                     , nullableShow $ discountSystem_Triggers cs
+                     , maybeShow $ discountSystem_Triggers cs
                      , "\n"
-                     , nullableShow $ discountSystem_Tracking cs
+                     , maybeShow $ discountSystem_Tracking cs
                      , "\n"
-                     , nullableShow $ discountSystem_Coupons cs
+                     , maybeShow $ discountSystem_Coupons cs
                      , "\n"
-                     , nullableShow $ discountSystem_Total cs
+                     , maybeShow $ discountSystem_Total cs
                      , "\n"
-                     , nullableShow $ discountSystem_Rewards cs
+                     , maybeShow $ discountSystem_Rewards cs
                      , "\n"
-                     , nullableShow $ hashCode cs
+                     , maybeShow $ hashCode cs
                      , "\n"
-                     , nullableShow $ gUID cs
+                     , maybeShow $ gUID cs
                      , "\n"
-                     , nullableShow $ abandonedCartEmailSend cs
+                     , maybeShow $ abandonedCartEmailSend cs
                      , "\n"
-                     , nullableShow $ postCode cs
+                     , maybeShow $ postCode cs
                      , "\n"
-                     , nullableShow $ deliveryMethodSetByUser cs
+                     , maybeShow $ deliveryMethodSetByUser cs
                      , "\n"
-                     , nullableShow $ hasEstimatedDelivery cs
+                     , maybeShow $ hasEstimatedDelivery cs
                      , "\n"
-                     , nullableShow $ updateLock cs
+                     , maybeShow $ updateLock cs
                      , "\n"
-                     , nullableShow $ updateLockId cs
+                     , maybeShow $ updateLockId cs
                      , "\n"
-                     , nullableShow $ hasValidVatNumber cs
+                     , maybeShow $ hasValidVatNumber cs
                      , "\n"]
 
 
-nullableShow :: Show a => Maybe a -> String
-nullableShow Nothing = "Null"
-nullableShow (Just v) = show v   
+maybeShow :: Show a => Maybe a -> String
+maybeShow Nothing = "Null"
+maybeShow (Just v) = show v   
 
 withConn :: String -> (Connection -> IO ()) -> IO ()
 withConn dbName action = do
