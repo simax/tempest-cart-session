@@ -10,90 +10,97 @@ main = print "tempest-cart-sessions!!!"
 
 {-# LANGUAGE OverloadedRecordFields #-}
 
+-- To build on save...
+-- stack exec -- ghcid -c "stack ghci tempest-cart-session"
+
 data CartSession = CartSession
-    { cartSessionId :: Int
-    , uID :: Double
-    , customerid :: Int
-    , orderdate :: UTCTime
-    , deliveryMethod :: Int
-    , totalTax :: Double
-    , totalDelivery :: Double 
-    , totalSub :: Double 
-    , totalFinal :: Double 
-    , countryCode :: String
-    , currencyCode :: String
-    , orderNumber :: String
-    , discountSystem_Triggers :: String
-    , discountSystem_Tracking :: String
-    , discountSystem_Coupons :: String
-    , discountSystem_Total :: Double
-    , discountSystem_Rewards :: String 
-    , hashCode :: String 
-    , gUID :: String 
-    , abandonedCartEmailSend :: String 
-    , postCode :: String 
-    , deliveryMethodSetByUser :: Bool
-    , hasEstimatedDelivery :: Bool
-    , updateLock :: Int
-    , updateLockId :: String 
-    , hasValidVatNumber :: Bool
+    { cartSessionId :: Maybe Int
+    , uID :: Maybe Double
+    , customerid :: Maybe Int
+    , orderdate :: Maybe UTCTime
+    , deliveryMethod :: Maybe Int
+    , totalTax :: Maybe Double
+    , totalDelivery :: Maybe Double 
+    , totalSub :: Maybe Double 
+    , totalFinal :: Maybe Double 
+    , countryCode :: Maybe String
+    , currencyCode :: Maybe String
+    , orderNumber :: Maybe String
+    , discountSystem_Triggers :: Maybe String
+    , discountSystem_Tracking :: Maybe String
+    , discountSystem_Coupons :: Maybe String
+    , discountSystem_Total :: Maybe Double
+    , discountSystem_Rewards :: Maybe String 
+    , hashCode :: Maybe String 
+    , gUID :: Maybe String 
+    , abandonedCartEmailSend :: Maybe String 
+    , postCode :: Maybe String 
+    , deliveryMethodSetByUser :: Maybe Bool
+    , hasEstimatedDelivery :: Maybe Bool
+    , updateLock :: Maybe Int
+    , updateLockId :: Maybe String 
+    , hasValidVatNumber :: Maybe Bool
 }
 
 instance Show CartSession where
    show cs = mconcat [ 
-                       show $ cartSessionId cs
+                       nullableShow $ cartSessionId cs
                      , "\n"
-                     , show $ uID cs
+                     , nullableShow $ uID cs
                      , "\n"
-                     , show $ customerid cs
+                     , nullableShow $ customerid cs
                      , "\n"
-                     , show $ orderdate cs
+                     , nullableShow $ orderdate cs
                      , "\n"
-                     , show $ deliveryMethod cs
+                     , nullableShow $ deliveryMethod cs
                      , "\n"
-                     , show $ totalTax cs
+                     , nullableShow $ totalTax cs
                      , "\n"
-                     , show $ totalDelivery cs
+                     , nullableShow $ totalDelivery cs
                      , "\n"
-                     , show $ totalSub cs
+                     , nullableShow $ totalSub cs
                      , "\n"
-                     , show $ totalFinal cs
+                     , nullableShow $ totalFinal cs
                      , "\n"
-                     , countryCode cs
+                     , nullableShow $ countryCode cs
                      , "\n"
-                     , currencyCode cs
+                     , nullableShow $ currencyCode cs
                      , "\n"
-                     , orderNumber cs
+                     , nullableShow $ orderNumber cs
                      , "\n"
-                     , discountSystem_Triggers cs
+                     , nullableShow $ discountSystem_Triggers cs
                      , "\n"
-                     , discountSystem_Tracking cs
+                     , nullableShow $ discountSystem_Tracking cs
                      , "\n"
-                     , discountSystem_Coupons cs
+                     , nullableShow $ discountSystem_Coupons cs
                      , "\n"
-                     , show $ discountSystem_Total cs
+                     , nullableShow $ discountSystem_Total cs
                      , "\n"
-                     , discountSystem_Rewards cs
+                     , nullableShow $ discountSystem_Rewards cs
                      , "\n"
-                     , hashCode cs
+                     , nullableShow $ hashCode cs
                      , "\n"
-                     , gUID cs
+                     , nullableShow $ gUID cs
                      , "\n"
-                     , abandonedCartEmailSend cs
+                     , nullableShow $ abandonedCartEmailSend cs
                      , "\n"
-                     , postCode cs
+                     , nullableShow $ postCode cs
                      , "\n"
-                     , show $ deliveryMethodSetByUser cs
+                     , nullableShow $ deliveryMethodSetByUser cs
                      , "\n"
-                     , show $ hasEstimatedDelivery cs
+                     , nullableShow $ hasEstimatedDelivery cs
                      , "\n"
-                     , show $ updateLock cs
+                     , nullableShow $ updateLock cs
                      , "\n"
-                     , updateLockId cs
+                     , nullableShow $ updateLockId cs
                      , "\n"
-                     , show $ hasValidVatNumber cs
+                     , nullableShow $ hasValidVatNumber cs
                      , "\n"]
 
+
+nullableShow :: Show a => Maybe a -> String
+nullableShow Nothing = "Null"
+nullableShow (Just v) = show v   
 
 withConn :: String -> (Connection -> IO ()) -> IO ()
 withConn dbName action = do
@@ -130,9 +137,10 @@ instance FromRow CartSession where
                          <*> field
 
 printCartSessions :: IO ()
-printCartSessions = withConn "./../data/shop-db.sqlite" $
+printCartSessions = withConn "./data/shop-db.sqlite" $
              \conn ->  do
-            --    resp <- query_ conn "SELECT id, uId, customerid, orderdate FROM tbl_cartSessions LIMIT 1;" :: IO [CartSession]
+               -- resp <- query_ conn "SELECT id, uId, customerid, orderdate, discountSystem_Total, abandonedCartEmailSend FROM tbl_cartSessions LIMIT 1;" :: IO [CartSession]
                resp <- query_ conn "SELECT * FROM tbl_cartSessions LIMIT 1;" :: IO [CartSession]
+            --    resp <- query_ conn "SELECT * FROM tbl_cartSessions LIMIT 1;" :: IO [CartSession]
                mapM_ print resp
                        
