@@ -10,8 +10,11 @@ main = print "tempest-cart-sessions!!!"
 
 {-# LANGUAGE OverloadedRecordFields #-}
 
--- To build on save...
+-- To build on save:
 -- stack exec -- ghcid -c "stack ghci tempest-cart-session"
+
+-- To run repl: 
+-- stack ghci (from project root) 
 
 data CartSession = CartSession
     { cartSessionId :: Maybe Int
@@ -139,8 +142,6 @@ instance FromRow CartSession where
 printCartSessions :: IO ()
 printCartSessions = withConn "./data/shop-db.sqlite" $
              \conn ->  do
-               -- resp <- query_ conn "SELECT id, uId, customerid, orderdate, discountSystem_Total, abandonedCartEmailSend FROM tbl_cartSessions LIMIT 1;" :: IO [CartSession]
                resp <- query_ conn "SELECT * FROM tbl_cartSessions LIMIT 1;" :: IO [CartSession]
-            --    resp <- query_ conn "SELECT * FROM tbl_cartSessions LIMIT 1;" :: IO [CartSession]
                mapM_ print resp
                        
