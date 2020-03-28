@@ -139,9 +139,28 @@ instance FromRow CartSession where
                          <*> field
                          <*> field
 
-printCartSessions :: IO ()
-printCartSessions = withConn "./data/shop-db.sqlite" $
+-- instance ToRow CartSession where
+--   toRow (CartSession cartSessionId, uID, customerid, orderdate, deliveryMethod, totalTax, totalDelivery, totalSub, totalFinal, countryCode, currencyCode, orderNumber, discountSystem_Triggers, discountSystem_Tracking, discountSystem_Coupons, discountSystem_Total, discountSystem_Rewards, hashCode, gUID, abandonedCartEmailSend, postCode, deliveryMethodSetByUser, hasEstimatedDelivery, updateLock, updateLockId, hasValidVatNumber) 
+--   = toRow (customerid, orderdate, deliveryMethod, totalTax, totalDelivery, totalSub, totalFinal, countryCode, currencyCode, orderNumber, discountSystem_Triggers, discountSystem_Tracking, discountSystem_Coupons, discountSystem_Total, discountSystem_Rewards, hashCode, gUID, abandonedCartEmailSend, postCode, deliveryMethodSetByUser, hasEstimatedDelivery, updateLock, updateLockId, hasValidVatNumber)
+
+
+printDelimeted :: Show a => a -> IO ()
+printDelimeted s = do
+                   print "---------------------------------------------------------"
+                   print s
+
+printTopTwoCartSessions :: IO ()
+printTopTwoCartSessions = withConn "./data/shop-db.sqlite" $
              \conn ->  do
-               resp <- query_ conn "SELECT * FROM tbl_cartSessions LIMIT 1;" :: IO [CartSession]
-               mapM_ print resp
+               resp <- query_ conn "SELECT * FROM tbl_cartSessions LIMIT 2;" :: IO [CartSession]
+               mapM_ printDelimeted resp
+               print "========================================================="
+
+printCartSessions :: Int -> IO ()
+printCartSessions cId = withConn "./data/shop-db.sqlite" $
+             \conn ->  do
+               resp <- query conn "SELECT * FROM tbl_cartSessions WHERE id = (?);" (Only cId) :: IO [CartSession]
+               mapM_ printDelimeted resp
+               putStrLn "========================================================="
                        
+-- insertCartSession :: 
